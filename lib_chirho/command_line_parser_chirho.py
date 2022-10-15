@@ -4,12 +4,17 @@ import argparse
 
 
 def parse_args_chirho():
+    """
+    God be praised, set up argparser to work with -h, as well as parse the command line arguments.
+    These will overwrite the environment variables.
+    :return: the parsed arguments
+    """
     parser = argparse.ArgumentParser(
         description='Scripture Alone Sermon Uploader. Give a Sermon Audio URL and post its details to the Scripture Alone Backend.')
     parser.add_argument(
         "-a", "--sermon_audio_url_chirho",
         help="The URL of the PocketBase server to use, or set environment variable SA_POCKETBASE_SERVER_URL_CHIRHO",
-        default="https://staging.api.scripturealone.app")
+        required=True)
     parser.add_argument(
         "-u", "--pocketbase_server_url_chirho",
         help="The URL of the PocketBase server to use, or set environment variable SA_POCKETBASE_SERVER_URL_CHIRHO",

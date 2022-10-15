@@ -2,16 +2,18 @@
 import logging
 import pocketbase
 
-from icecream import ic
 from lib_chirho import settings_chirho
 
-from lib_chirho.classes_chirho.author_chirho import AuthorChirho
-from lib_chirho.classes_chirho.sermon_chirho import SermonChirho
+from lib_chirho.models_chirho.author_chirho import AuthorChirho
+from lib_chirho.models_chirho.sermon_chirho import SermonChirho
+from lib_chirho.sermon_audio_sermon_url_parser_chirho import SermonAudioSermonUrlParserChirho
 
 logger_chirho = logging.getLogger(__name__)
 
 
 def testing_chirho():
+    parser_chirho = SermonAudioSermonUrlParserChirho("https://www.sermonaudio.com/sermoninfo.asp?SID=92522120176322")
+    parser_chirho.parse_url_chirho()
     my_author_chirho = AuthorChirho(firstName="TestFirstChirho", lastName="TestLastChirho")
     my_author_chirho.find_or_create_chirho()
     my_sermon_chirho = SermonChirho(
@@ -32,7 +34,7 @@ def testing_old1_chirho():
 
     my_sermon_chirho = SermonChirho(
         title="test_aleluya", description="test", sermonDate="2022-01-01 10:00:00", duration=123)
-    ic(my_sermon_chirho.create_chirho())
+    my_sermon_chirho.create_chirho()
     sermon_data_chirho = {
         "title": "test_aleluya",
         "description": "test",
@@ -51,6 +53,4 @@ def testing_old1_chirho():
     }
 
     sermon_create_chirho = client_chirho.records.create('sermons', sermon_data_chirho)
-    ic(sermon_create_chirho)
     sermon_delete_chirho = client_chirho.records.delete('sermons', sermon_create_chirho.id)
-    ic(sermon_delete_chirho)

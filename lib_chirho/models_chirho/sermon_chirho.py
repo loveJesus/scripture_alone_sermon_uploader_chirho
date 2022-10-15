@@ -2,7 +2,6 @@
 import logging
 import pocketbase
 
-from icecream import ic
 from typing import Optional
 
 from lib_chirho import settings_chirho

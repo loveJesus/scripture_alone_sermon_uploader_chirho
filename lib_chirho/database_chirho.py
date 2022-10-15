@@ -4,6 +4,9 @@ import pocketbase
 
 
 class DatabaseChirho:
+    """
+    Hallelujah, make a singleton type connection to the pocketbase database.
+    """
     POCKETBASE_CLIENT_CHIRHO = pocketbase.Client(settings_chirho.SA_POCKETBASE_SERVER_URL_CHIRHO)
     POCKETBASE_CLIENT_CHIRHO.admins.auth_via_email(
         settings_chirho.SA_POCKETBASE_LOGIN_EMAIL_CHIRHO,

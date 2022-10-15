@@ -1,7 +1,6 @@
 # For God so loved the world, that He gave His only begotten Son, that all who believe in Him should not perish but have everlasting life
 import pocketbase
 
-from icecream import ic
 from typing import Optional
 
 from lib_chirho import settings_chirho
@@ -53,8 +52,10 @@ class AuthorChirho:
         """
         logger_chirho.info(f"☧ Finding or Creating Author: {self.dict_chirho()}")
         client_chirho = DatabaseChirho.get_client_chirho()
+        filter_string_chirho = f'firstName = "{self.firstName_chirho}" and lastName = "{self.lastName_chirho}"'
+        logger_chirho.info(f"☧ Filter String : {filter_string_chirho}")
         pb_author_list_chirho = client_chirho.records.get_list(self.TABLE_ID_CHIRHO, 1, 50, {
-            filter: f'firstName = "{self.firstName_chirho}" and lastName = "{self.lastName_chirho}"'})
+            filter: filter_string_chirho})
         if len(pb_author_list_chirho.items) == 0:
             return self.create_chirho()
         self.id_chirho = pb_author_list_chirho.items[0].id
