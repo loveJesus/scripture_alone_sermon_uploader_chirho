@@ -7,6 +7,9 @@ from typing import Optional
 from lib_chirho import settings_chirho
 
 import logging
+
+from lib_chirho.database_chirho import DatabaseChirho
+
 logger_chirho = logging.getLogger(__name__)
 
 
@@ -49,7 +52,7 @@ class AuthorChirho:
         If the author does not exist, will create the author.
         """
         logger_chirho.info(f"☧ Finding or Creating Author: {self.dict_chirho()}")
-        client_chirho = settings_chirho.POCKETBASE_CLIENT_CHIRHO
+        client_chirho = DatabaseChirho.get_client_chirho()
         pb_author_list_chirho = client_chirho.records.get_list(self.TABLE_ID_CHIRHO, 1, 50, {
             filter: f'firstName = "{self.firstName_chirho}" and lastName = "{self.lastName_chirho}"'})
         if len(pb_author_list_chirho.items) == 0:
@@ -63,7 +66,7 @@ class AuthorChirho:
         Hallelujah, this method creates a new author in PocketBase.
         """
         logger_chirho.info(f"☧ Creating Author: {self.dict_chirho()}")
-        client_chirho = settings_chirho.POCKETBASE_CLIENT_CHIRHO
+        client_chirho = DatabaseChirho.get_client_chirho()
         pb_sermon_created_chirho = client_chirho.records.create(self.TABLE_ID_CHIRHO, self.dict_chirho())
         self.id_chirho = pb_sermon_created_chirho.id
         logger_chirho.info(f"☧ Created Author with Id -> {self.id_chirho}")

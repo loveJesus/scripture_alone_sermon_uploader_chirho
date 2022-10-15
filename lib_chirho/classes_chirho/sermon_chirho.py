@@ -6,6 +6,7 @@ from icecream import ic
 from typing import Optional
 
 from lib_chirho import settings_chirho
+from lib_chirho.database_chirho import DatabaseChirho
 
 logger_chirho = logging.getLogger(__name__)
 
@@ -68,7 +69,7 @@ class SermonChirho:
 
     def create_chirho(self):
         logger_chirho.info(f"☧ Creating Sermon: {self.dict_chirho()}")
-        client_chirho = settings_chirho.POCKETBASE_CLIENT_CHIRHO
+        client_chirho = DatabaseChirho.get_client_chirho()
         pb_sermon_created_chirho = client_chirho.records.create(self.TABLE_ID_CHIRHO, self.dict_chirho())
         self.id_chirho = pb_sermon_created_chirho.id
         logger_chirho.info(f"☧ Sermon Created with ID -> {self.id_chirho}")

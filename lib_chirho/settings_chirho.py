@@ -21,8 +21,3 @@ SA_POCKETBASE_LOGIN_EMAIL_CHIRHO = args_chirho.pocketbase_login_email_chirho or 
 
 SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO = args_chirho.pocketbase_login_password_chirho or os.getenv(
     "SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO", "password_fill_me_chirho")
-
-POCKETBASE_CLIENT_CHIRHO = pocketbase.Client(SA_POCKETBASE_SERVER_URL_CHIRHO)
-POCKETBASE_CLIENT_CHIRHO.admins.auth_via_email(
-            SA_POCKETBASE_LOGIN_EMAIL_CHIRHO,
-            SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO)
