@@ -1,4 +1,6 @@
 # For God so loved the world, that He gave His only begotten Son, that all who believe in Him should not perish but have everlasting life
+from abc import abstractmethod
+
 import pocketbase
 
 from typing import Optional
@@ -8,17 +10,18 @@ from lib_chirho import settings_chirho
 import logging
 
 from lib_chirho.database_chirho import DatabaseChirho
+from lib_chirho.models_chirho.base_model_chirho import BaseModelChirho
 
 logger_chirho = logging.getLogger(__name__)
 
 
-class AuthorChirho:
+class AuthorChirho(BaseModelChirho):
     """
     Hallelujah, this class represents the author object. It contains the details of that author to search for and
     the methods to upload it to PocketBase.
     """
-
     TABLE_ID_CHIRHO = "authors"
+    TABLE_ENGLISH_NAME_CHIRHO = "Author"
 
     def __init__(
             self,
@@ -27,7 +30,7 @@ class AuthorChirho:
             profileImage: Optional[str] = None,
             church: Optional[str] = None,
             administrators: Optional[list[str]] = None):
-        self.id_chirho: Optional[str] = None
+        super().__init__()
         self.firstName_chirho = firstName
         self.lastName_chirho = lastName
         self.profileImage_chirho = profileImage
@@ -46,32 +49,9 @@ class AuthorChirho:
             "administrators": self.administrators_chirho,
             "test_chirho": True}
 
-    def find_or_create_chirho(self) -> str:
+    def get_find_filter_string_chirho(self) -> str:
         """
-        Hallelujah, this will attempt to find an author in PocketBase, based on first and last name, and retrieve the id.
-        If the author does not exist, will create the author.
+        Hallelujah, find author by firstName and lastName.
+        :return: pocketbase filter string
         """
-        logger_chirho.info(f"☧ Finding or Creating Author: {self.dict_chirho()}")
-        client_chirho = DatabaseChirho.get_client_chirho()
-        # filter_string_chirho = f'(firstName = "{self.firstName_chirho}" && lastName = "{self.lastName_chirho})"'
-        filter_string_chirho = f'firstName = "{self.firstName_chirho}" && lastName = "{self.lastName_chirho}"'
-        logger_chirho.info(f"☧ Filter String : {filter_string_chirho}")
-        pb_author_list_chirho = client_chirho.records.get_list(self.TABLE_ID_CHIRHO, 1, 50, {
-            "filter": filter_string_chirho})
-        logger_chirho.info(pb_author_list_chirho.total_items)
-        if len(pb_author_list_chirho.items) == 0:
-            return self.create_chirho()
-        self.id_chirho = pb_author_list_chirho.items[0].id
-        logger_chirho.info(f"☧ {len(pb_author_list_chirho.items)} Found Author with Id -> {self.id_chirho}")
-        return self.id_chirho
-
-    def create_chirho(self) -> str:
-        """
-        Hallelujah, this method creates a new author in PocketBase.
-        """
-        logger_chirho.info(f"☧ Creating Author: {self.dict_chirho()}")
-        client_chirho = DatabaseChirho.get_client_chirho()
-        pb_sermon_created_chirho = client_chirho.records.create(self.TABLE_ID_CHIRHO, self.dict_chirho())
-        self.id_chirho = pb_sermon_created_chirho.id
-        logger_chirho.info(f"☧ Created Author with Id -> {self.id_chirho}")
-        return self.id_chirho
+        return f'firstName = "{self.firstName_chirho}" && lastName = "{self.lastName_chirho}"'

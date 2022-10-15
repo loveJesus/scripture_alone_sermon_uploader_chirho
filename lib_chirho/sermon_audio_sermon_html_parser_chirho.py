@@ -55,12 +55,15 @@ class SermonAudioSermonHtmlParserChirho:
             "a", {"class": "navleftblack5b", "style": "color:bb8844"}).text.split("/"))
         sermon_duration_minutes_chirho, sermon_duration_seconds_chirho = map(int, soup_chirho.find(
             "font", {"class": "ve1", "color": "565656"}).text.split(" ")[0].split(":"))
-        sermon_author_first_name_chirho, sermon_author_last_name_chirho = soup_chirho.find(
-            "a", {"class": "navleftblack12c"}).text.split(" ")
+        sermon_author_full_name_chirho = soup_chirho.find(
+            "a", {"class": "navleftblack12c"}).text
         sermon_audio_link_chirho = soup_chirho.find(
             "a", {"rel": "nofollow", "href": re.compile(r'.*mp3$')})["href"]
         sermon_video_link_element_chirho = soup_chirho.find(
             "a", {"rel": "nofollow", "href": re.compile(r'download.*mp4$')})
+
+        sermon_author_first_name_chirho = " ".join(sermon_author_full_name_chirho.split(" ")[0:-1])
+        sermon_author_last_name_chirho = sermon_author_full_name_chirho.split(" ")[-1]
         sermon_video_link_chirho = sermon_video_link_element_chirho["href"] if sermon_video_link_element_chirho else None
         sermon_duration_ms_chirho = (sermon_duration_minutes_chirho * 60 + sermon_duration_seconds_chirho) * 1000
         sermon_out_date_chirho = f"{sermon_year_chirho}-{sermon_month_chirho:02d}-{sermon_day_chirho:02d} 10:00:00"
@@ -70,7 +73,7 @@ class SermonAudioSermonHtmlParserChirho:
 
         author_chirho = AuthorChirho(
             firstName=sermon_author_first_name_chirho, lastName=sermon_author_last_name_chirho)
-        author_chirho.find_or_create_chirho()
+        author_chirho.find_and_update_or_create_chirho()
         sermon_chirho = SermonChirho(
             title=sermon_title_chirho,
             sermonDate=sermon_out_date_chirho,
@@ -78,4 +81,4 @@ class SermonAudioSermonHtmlParserChirho:
             author=author_chirho.id_chirho,
             externalAudioFileUrl=sermon_audio_link_chirho,
             externalVideoFileUrl=sermon_video_link_chirho)
-        sermon_chirho.find_or_create_chirho()
+        sermon_chirho.find_and_update_or_create_chirho()
