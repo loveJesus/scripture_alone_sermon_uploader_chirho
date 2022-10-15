@@ -60,7 +60,7 @@ class SermonAudioSermonHtmlParserChirho:
         sermon_audio_link_chirho = soup_chirho.find(
             "a", {"rel": "nofollow", "href": re.compile(r'.*mp3$')})["href"]
         sermon_video_link_element_chirho = soup_chirho.find(
-            "a", {"rel": "nofollow", "href": re.compile(r'.*mp4$')})
+            "a", {"rel": "nofollow", "href": re.compile(r'download.*mp4$')})
         sermon_video_link_chirho = sermon_video_link_element_chirho["href"] if sermon_video_link_element_chirho else None
         sermon_duration_ms_chirho = (sermon_duration_minutes_chirho * 60 + sermon_duration_seconds_chirho) * 1000
         sermon_out_date_chirho = f"{sermon_year_chirho}-{sermon_month_chirho:02d}-{sermon_day_chirho:02d} 10:00:00"

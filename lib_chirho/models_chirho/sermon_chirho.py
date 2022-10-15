@@ -63,7 +63,8 @@ class SermonChirho:
             "coverImage": self.coverImage_chirho,
             "sermonDate": self.sermonDate_chirho,
             "author": self.author_chirho,
-            "duration": self.duration_chirho
+            "duration": self.duration_chirho,
+            "test_chirho": True
         }
 
     def find_or_create_chirho(self) -> str:
@@ -76,7 +77,7 @@ class SermonChirho:
         filter_string_chirho = f'title = "{self.title_chirho}"'
         logger_chirho.info(f"☧ Filter String : {filter_string_chirho}")
         pb_sermon_list_chirho = client_chirho.records.get_list(self.TABLE_ID_CHIRHO, 1, 50, {
-            filter: filter_string_chirho})
+            "filter": filter_string_chirho})
         if len(pb_sermon_list_chirho.items) == 0:
             return self.create_chirho()
         self.id_chirho = pb_sermon_list_chirho.items[0].id

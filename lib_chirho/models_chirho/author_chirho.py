@@ -43,7 +43,8 @@ class AuthorChirho:
             "lastName": self.lastName_chirho,
             "profileImage": self.profileImage_chirho,
             "church": self.church_chirho,
-            "administrators": self.administrators_chirho}
+            "administrators": self.administrators_chirho,
+            "test_chirho": True}
 
     def find_or_create_chirho(self) -> str:
         """
