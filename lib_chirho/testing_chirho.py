@@ -1,12 +1,26 @@
 # For God so loved the world, that He gave His only begotten Son, that all who believe in Him should not perish but have everlasting life
-from icecream import ic
-from lib_chirho import settings_chirho
+import logging
 import pocketbase
 
+from icecream import ic
+from lib_chirho import settings_chirho
+
+from lib_chirho.classes_chirho.author_chirho import AuthorChirho
 from lib_chirho.classes_chirho.sermon_chirho import SermonChirho
+
+logger_chirho = logging.getLogger(__name__)
 
 
 def testing_chirho():
+    my_author_chirho = AuthorChirho(firstName="TestFirstChirho", lastName="TestLastChirho")
+    my_author_chirho.find_or_create_chirho()
+    my_sermon_chirho = SermonChirho(
+        title="test_aleluya", description="test", sermonDate="2022-01-01 10:00:00", duration=123,
+        author=my_author_chirho.id_chirho)
+    my_sermon_chirho.create_chirho()
+
+
+def testing_old1_chirho():
     client_chirho = pocketbase.Client(settings_chirho.SA_POCKETBASE_SERVER_URL_CHIRHO)
     client_chirho.admins.auth_via_email(
         settings_chirho.SA_POCKETBASE_LOGIN_EMAIL_CHIRHO, settings_chirho.SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO)

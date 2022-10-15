@@ -48,17 +48,23 @@ class AuthorChirho:
         Hallelujah, this will attempt to find an author in PocketBase, based on first and last name, and retrieve the id.
         If the author does not exist, will create the author.
         """
-        pass
+        logger_chirho.info(f"☧ Finding or Creating Author: {self.dict_chirho()}")
+        client_chirho = settings_chirho.POCKETBASE_CLIENT_CHIRHO
+        pb_author_list_chirho = client_chirho.records.get_list(self.TABLE_ID_CHIRHO, 1, 50, {
+            filter: f'firstName = "{self.firstName_chirho}" and lastName = "{self.lastName_chirho}"'})
+        if len(pb_author_list_chirho.items) == 0:
+            return self.create_chirho()
+        self.id_chirho = pb_author_list_chirho.items[0].id
+        logger_chirho.info(f"☧ Found Author with Id -> {self.id_chirho}")
+        return self.id_chirho
 
     def create_chirho(self) -> None:
         """
         Hallelujah, this method creates a new author in PocketBase.
         """
-        logger_chirho.info("create author: ", self.dict_chirho())
-        client_chirho = pocketbase.Client(settings_chirho.SA_POCKETBASE_SERVER_URL_CHIRHO)
-        client_chirho.admins.auth_via_email(
-            settings_chirho.SA_POCKETBASE_LOGIN_EMAIL_CHIRHO, settings_chirho.SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO)
+        logger_chirho.info(f"☧ Creating Author: {self.dict_chirho()}")
+        client_chirho = settings_chirho.POCKETBASE_CLIENT_CHIRHO
         pb_sermon_created_chirho = client_chirho.records.create(self.TABLE_ID_CHIRHO, self.dict_chirho())
         self.id_chirho = pb_sermon_created_chirho.id
-        logger_chirho.info("New author id: ", self.id_chirho)
+        logger_chirho.info(f"☧ Created Author with Id -> {self.id_chirho}")
         return self.id_chirho

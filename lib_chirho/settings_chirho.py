@@ -1,6 +1,7 @@
 # For God so loved the world, that He gave His only begotten Son, that all who believe in Him should not perish but have everlasting life
 import logging
 import os
+import pocketbase
 import sys
 
 from dotenv import load_dotenv
@@ -20,3 +21,8 @@ SA_POCKETBASE_LOGIN_EMAIL_CHIRHO = args_chirho.pocketbase_login_email_chirho or 
 
 SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO = args_chirho.pocketbase_login_password_chirho or os.getenv(
     "SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO", "password_fill_me_chirho")
+
+POCKETBASE_CLIENT_CHIRHO = pocketbase.Client(SA_POCKETBASE_SERVER_URL_CHIRHO)
+POCKETBASE_CLIENT_CHIRHO.admins.auth_via_email(
+            SA_POCKETBASE_LOGIN_EMAIL_CHIRHO,
+            SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO)

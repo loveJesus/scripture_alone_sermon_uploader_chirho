@@ -1,10 +1,13 @@
 # For God so loved the world, that He gave His only begotten Son, that all who believe in Him should not perish but have everlasting life
+import logging
 import pocketbase
 
 from icecream import ic
 from typing import Optional
 
 from lib_chirho import settings_chirho
+
+logger_chirho = logging.getLogger(__name__)
 
 
 class SermonChirho:
@@ -13,7 +16,7 @@ class SermonChirho:
     the methods to upload it to PocketBase.
     """
 
-    TABLE_ID_CHIRHO = "authors"
+    TABLE_ID_CHIRHO = "sermons"
 
     def __init__(
             self,
@@ -64,10 +67,9 @@ class SermonChirho:
         }
 
     def create_chirho(self):
-        client_chirho = pocketbase.Client(settings_chirho.SA_POCKETBASE_SERVER_URL_CHIRHO)
-        client_chirho.admins.auth_via_email(
-            settings_chirho.SA_POCKETBASE_LOGIN_EMAIL_CHIRHO, settings_chirho.SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO)
-        pb_sermon_created_chirho = client_chirho.records.create('sermons', self.dict_chirho())
+        logger_chirho.info(f"☧ Creating Sermon: {self.dict_chirho()}")
+        client_chirho = settings_chirho.POCKETBASE_CLIENT_CHIRHO
+        pb_sermon_created_chirho = client_chirho.records.create(self.TABLE_ID_CHIRHO, self.dict_chirho())
         self.id_chirho = pb_sermon_created_chirho.id
-        ic("Sermon Uploaded ->", self.id_chirho)
+        logger_chirho.info(f"☧ Sermon Created with ID -> {self.id_chirho}")
         return self.id_chirho
