@@ -50,7 +50,6 @@ class BaseModelChirho:
         else:
             return self.create_chirho()
 
-
     @abstractmethod
     def get_find_filter_string_chirho(self) -> str:
         """
