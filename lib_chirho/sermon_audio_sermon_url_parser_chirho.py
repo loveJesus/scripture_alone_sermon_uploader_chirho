@@ -30,7 +30,11 @@ class SermonAudioSermonUrlParserChirho:
             raise Exception(f"Failed to get the sermon audio URL: {self.url_chirho}")
 
         logger_chirho.info("☧ Parsing the sermon audio URL: %s", self.url_chirho)
-        soup_chirho = BeautifulSoup(response_chirho.text, "html.parser")
+
+        self.parse_text_chirho(response_chirho.text)
+
+    def parse_text_chirho(self, text_chirho: str):
+        soup_chirho = BeautifulSoup(text_chirho, "html.parser")
 
         sermon_title_chirho = soup_chirho.find(
             "font", {"class": "ar10 noblb"}).text
