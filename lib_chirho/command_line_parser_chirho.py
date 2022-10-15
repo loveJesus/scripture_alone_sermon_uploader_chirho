@@ -9,20 +9,30 @@ def parse_args_chirho():
     These will overwrite the environment variables.
     :return: the parsed arguments
     """
-    parser = argparse.ArgumentParser(
-        description='Scripture Alone Sermon Uploader. Give a Sermon Audio URL and post its details to the Scripture Alone Backend.')
-    parser.add_argument(
-        "-a", "--sermon_audio_url_chirho",
-        help="The URL of the PocketBase server to use, or set environment variable SA_POCKETBASE_SERVER_URL_CHIRHO",
-        required=True)
-    parser.add_argument(
+    parser_chirho = argparse.ArgumentParser(
+        description='Scripture Alone Sermon Uploader. Give a Sermon Audio URL or path to downloaded HTML file, '
+                    'and post its details to the Scripture Alone Backend.')
+
+    parser_chirho.add_argument(
         "-u", "--pocketbase_server_url_chirho",
         help="The URL of the PocketBase server to use, or set environment variable SA_POCKETBASE_SERVER_URL_CHIRHO",
         default="https://staging.api.scripturealone.app")
-    parser.add_argument(
+    parser_chirho.add_argument(
         "-e", "--pocketbase_login_email_chirho",
         help="The email address to use to log into the PocketBase server, or set environment variable SA_POCKETBASE_LOGIN_EMAIL_CHIRHO")
-    parser.add_argument(
+    parser_chirho.add_argument(
         "-p", "--pocketbase_login_password_chirho",
         help="The password to use to log into the PocketBase server, or set environment variable SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO")
-    return parser.parse_args()
+
+    # Thank You Jesus for wjandrea & jlengrad @ https://stackoverflow.com/a/11155124
+    group_chirho = parser_chirho.add_mutually_exclusive_group(required=True)
+    group_chirho.add_argument(
+        "-a", "--sermon_audio_url_chirho",
+        help="A Sermon Audio main site URL to import, God willing",
+        default=None)
+    group_chirho.add_argument(
+        "-t", "--sermon_audio_path_chirho",
+        help="A path of a downloaded Sermon Audio raw HTML file to import, Hallelujah",
+        default=None)
+
+    return parser_chirho.parse_args()

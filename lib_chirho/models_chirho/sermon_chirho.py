@@ -66,7 +66,28 @@ class SermonChirho:
             "duration": self.duration_chirho
         }
 
-    def create_chirho(self):
+    def find_or_create_chirho(self) -> str:
+        """
+        Praise Jesus, Helps sermons not be recreated with same title
+        :return: db id of sermon, hallelujah
+        """
+        logger_chirho.info(f"☧ Finding or Creating Sermon: {self.dict_chirho()}")
+        client_chirho = DatabaseChirho.get_client_chirho()
+        filter_string_chirho = f'title = "{self.title_chirho}"'
+        logger_chirho.info(f"☧ Filter String : {filter_string_chirho}")
+        pb_sermon_list_chirho = client_chirho.records.get_list(self.TABLE_ID_CHIRHO, 1, 50, {
+            filter: filter_string_chirho})
+        if len(pb_sermon_list_chirho.items) == 0:
+            return self.create_chirho()
+        self.id_chirho = pb_sermon_list_chirho.items[0].id
+        logger_chirho.info(f"☧ Sermon Found with ID -> {self.id_chirho}")
+        return self.id_chirho
+
+    def create_chirho(self) -> str:
+        """
+        Praise the Lord, store new sermon in DB
+        :return: id of sermon, hallelujah
+        """
         logger_chirho.info(f"☧ Creating Sermon: {self.dict_chirho()}")
         client_chirho = DatabaseChirho.get_client_chirho()
         pb_sermon_created_chirho = client_chirho.records.create(self.TABLE_ID_CHIRHO, self.dict_chirho())

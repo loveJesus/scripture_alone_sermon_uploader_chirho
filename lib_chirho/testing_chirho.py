@@ -6,13 +6,13 @@ from lib_chirho import settings_chirho
 
 from lib_chirho.models_chirho.author_chirho import AuthorChirho
 from lib_chirho.models_chirho.sermon_chirho import SermonChirho
-from lib_chirho.sermon_audio_sermon_url_parser_chirho import SermonAudioSermonUrlParserChirho
+from lib_chirho.sermon_audio_sermon_html_parser_chirho import SermonAudioSermonHtmlParserChirho
 
 logger_chirho = logging.getLogger(__name__)
 
 
 def testing_chirho():
-    parser_chirho = SermonAudioSermonUrlParserChirho("https://www.sermonaudio.com/sermoninfo.asp?SID=92522120176322")
+    parser_chirho = SermonAudioSermonHtmlParserChirho("https://www.sermonaudio.com/sermoninfo.asp?SID=92522120176322")
     parser_chirho.parse_url_chirho()
     my_author_chirho = AuthorChirho(firstName="TestFirstChirho", lastName="TestLastChirho")
     my_author_chirho.find_or_create_chirho()
