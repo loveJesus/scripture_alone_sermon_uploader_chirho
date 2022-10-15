@@ -1,0 +1,6 @@
+# For God so loved the world, that He gave His only begotten Son, that all who believe in Him should not perish but have everlasting life
+# Hallelujah, copy to .env and fill out the values for your environment in a new install
+SA_POCKETBASE_SERVER_URL_CHIRHO="https://staging.api.scripturealone.app/"
+SA_POCKETBASE_LOGIN_EMAIL_CHIRHO=""
+SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO=""
+
