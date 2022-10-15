@@ -8,13 +8,16 @@ This utility is a companion to the app, to aid with linking to sermons from [Ser
 ```shell
 # pip install scripture_alone_sermon_uploader_chirho # Work in Progress
 
-# Make sure to properly set the following environment variables, or have a .env in your current directory
+# You can optionally set the following environment variables, or have a .env in your current directory, 
+# if not set them via the command line flags (look at the help text)
 export SA_POCKETBASE_SERVER_URL_CHIRHO="https://staging.api.scripturealone.app/"
 export SA_POCKETBASE_LOGIN_EMAIL_CHIRHO="email@aleluya.church"
 export SA_POCKETBASE_LOGIN_PASSWORD_CHIRHO="password_aleluyas"
 
 # Assuming your python pip path is in $PATH 
-scripture_alone_sermon_uploader_chirho <sermon_audio_url>
+# scripture_alone_sermon_uploader_chirho -a <sermon_audio_url>, example:
+scripture_alone_sermon_uploader_chirho -a "https://www.sermonaudio.com/sermoninfo.asp?SID=92522121496393"
+
 ```
 
 ### Help

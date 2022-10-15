@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name='scripture_alone_sermon_uploader_chirho',
     version="0.1.0",
-    scripts=['scripture_alone_sermon_uploader_chirho'],
+    scripts=['scripture_alone_sermon_uploader_chirho.py'],
     author="Love Jesus",
     author_email="loveJesus@loveJesus.xyz",
     description="Hallelujah - upload sermons to https://scripturealone.app.",
