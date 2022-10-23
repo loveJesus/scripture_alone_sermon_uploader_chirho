@@ -22,6 +22,7 @@ class BaseModelChirho:
 
     TABLE_ID_CHIRHO = "base"
     TABLE_ENGLISH_NAME_CHIRHO = "Basemodel"
+    TABLE_UPDATE_OVERWRITE_CHIRHO = False
 
     def __init__(self):
         self.id_chirho: Optional[str] = None
@@ -46,7 +47,10 @@ class BaseModelChirho:
         logger_chirho.info(f"☧ Finding or Creating {self.TABLE_ENGLISH_NAME_CHIRHO}: {self.dict_chirho()}")
         id_chirho = self.find_id_chirho()
         if id_chirho:
-            return self.update_chirho()
+            if self.TABLE_UPDATE_OVERWRITE_CHIRHO:
+                return self.update_chirho()
+            else:
+                return id_chirho  #self.update_chirho()
         else:
             return self.create_chirho()
 

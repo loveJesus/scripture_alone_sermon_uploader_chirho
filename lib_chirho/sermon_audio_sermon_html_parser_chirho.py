@@ -17,12 +17,20 @@ class SermonAudioSermonHtmlParserChirho:
     """
     Hallelujah, class that will parse a sermon audio URL and create the relevant Scripture Alone Database Records
     """
-
-    def __init__(self, url_chirho: Optional[str], path_chirho: Optional[str]):
+    def __init__(
+            self,
+            url_chirho: Optional[str] = None,
+            path_chirho: Optional[str] = None,
+            html_chirho: Optional[str] = None,
+            church_id_chirho: Optional[str] = None):
         self.url_chirho = url_chirho
         self.path_chirho = path_chirho
+        self.html_chirho = html_chirho
+        self.church_id_chirho = church_id_chirho
 
     def parse_chirho(self):
+        if self.html_chirho:
+            self.parse_html_chirho(self.html_chirho)
         if self.path_chirho:
             self.parse_path_chirho()
         else:
@@ -45,9 +53,8 @@ class SermonAudioSermonHtmlParserChirho:
         with open(self.path_chirho, "r") as f_chirho:
             self.parse_html_chirho(f_chirho.read())
 
-    @classmethod
-    def parse_html_chirho(cls, text_chirho: str):
-        soup_chirho = BeautifulSoup(text_chirho, "html.parser")
+    def parse_html_chirho(self, html_chirho: str):
+        soup_chirho = BeautifulSoup(html_chirho, "html.parser")
 
         sermon_title_chirho = soup_chirho.find(
             "font", {"class": "ar10 noblb"}).text
@@ -57,10 +64,14 @@ class SermonAudioSermonHtmlParserChirho:
             "font", {"class": "ve1", "color": "565656"}).text.split(" ")[0].split(":"))
         sermon_author_full_name_chirho = soup_chirho.find(
             "a", {"class": "navleftblack12c"}).text
-        sermon_audio_link_chirho = soup_chirho.find(
+        sermon_audio_link_1_chirho = soup_chirho.find(
             "a", {"rel": "nofollow", "href": re.compile(r'.*mp3$')})["href"]
         sermon_video_link_element_chirho = soup_chirho.find(
             "a", {"rel": "nofollow", "href": re.compile(r'download.*mp4$')})
+
+        sermon_id_chirho = sermon_audio_link_1_chirho.split("/")[-1].split(".")[0]
+
+        sermon_audio_link_chirho = f"https://media-cloud.sermonaudio.com/audio/{sermon_id_chirho}.mp3" 
 
         sermon_author_first_name_chirho = " ".join(sermon_author_full_name_chirho.split(" ")[0:-1])
         sermon_author_last_name_chirho = sermon_author_full_name_chirho.split(" ")[-1]
@@ -80,5 +91,6 @@ class SermonAudioSermonHtmlParserChirho:
             duration=sermon_duration_ms_chirho,
             author=author_chirho.id_chirho,
             externalAudioFileUrl=sermon_audio_link_chirho,
-            externalVideoFileUrl=sermon_video_link_chirho)
+            externalVideoFileUrl=sermon_video_link_chirho,
+            church=self.church_id_chirho)
         sermon_chirho.find_and_update_or_create_chirho()

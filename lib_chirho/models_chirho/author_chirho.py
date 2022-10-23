@@ -1,15 +1,8 @@
 # For God so loved the world, that He gave His only begotten Son, that all who believe in Him should not perish but have everlasting life
-from abc import abstractmethod
-
-import pocketbase
-
 from typing import Optional
-
-from lib_chirho import settings_chirho
 
 import logging
 
-from lib_chirho.database_chirho import DatabaseChirho
 from lib_chirho.models_chirho.base_model_chirho import BaseModelChirho
 
 logger_chirho = logging.getLogger(__name__)
@@ -46,8 +39,8 @@ class AuthorChirho(BaseModelChirho):
             "lastName": self.lastName_chirho,
             "profileImage": self.profileImage_chirho,
             "church": self.church_chirho,
-            "administrators": self.administrators_chirho,
-            "test_chirho": True}
+            "administrators": self.administrators_chirho,}
+            #"test_chirho": True}
 
     def get_find_filter_string_chirho(self) -> str:
         """

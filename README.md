@@ -31,7 +31,8 @@ scripture_alone_sermon_uploader_chirho -a "https://www.sermonaudio.com/sermoninf
 
 ### Help
 ```text
-usage: scripture_alone_sermon_uploader_chirho.py [-h] [-u POCKETBASE_SERVER_URL_CHIRHO] [-e POCKETBASE_LOGIN_EMAIL_CHIRHO] [-p POCKETBASE_LOGIN_PASSWORD_CHIRHO] (-a SERMON_AUDIO_URL_CHIRHO | -t SERMON_AUDIO_PATH_CHIRHO)
+usage: scripture_alone_sermon_uploader_chirho.py [-h] [-u POCKETBASE_SERVER_URL_CHIRHO] [-e POCKETBASE_LOGIN_EMAIL_CHIRHO] [-p POCKETBASE_LOGIN_PASSWORD_CHIRHO]
+                                                 (-a SERMON_AUDIO_URL_CHIRHO | -t SERMON_AUDIO_PATH_CHIRHO | -c SERMON_AUDIO_CHURCH_SHORT_NAME_CHIRHO)
 
 Scripture Alone Sermon Uploader. Give a Sermon Audio URL or path to downloaded HTML file, and post its details to the Scripture Alone Backend.
 
@@ -47,6 +48,8 @@ options:
                         A Sermon Audio main site URL to import, God willing
   -t SERMON_AUDIO_PATH_CHIRHO, --sermon_audio_path_chirho SERMON_AUDIO_PATH_CHIRHO
                         A path of a downloaded Sermon Audio raw HTML file to import, Hallelujah
+  -c SERMON_AUDIO_CHURCH_SHORT_NAME_CHIRHO, --sermon_audio_church_short_name_chirho SERMON_AUDIO_CHURCH_SHORT_NAME_CHIRHO
+                        The short name of the church to download sermons from, e.g. "youthman1611" for Midway Baptist Church
 ```
 
 ### Notes:
