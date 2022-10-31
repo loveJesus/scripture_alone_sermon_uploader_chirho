@@ -16,7 +16,6 @@ logger_chirho = logging.getLogger(__name__)
 
 
 class SermonAudioChurchShortNameCrawlerChirho:
-
     def __init__(self, church_short_name_chirho: str):
         self.church_short_name_chirho = church_short_name_chirho
         self.sermon_audio_church_base_url_chirho = f"https://www.sermonaudio.com/solo/{church_short_name_chirho}/sermons/?page="
@@ -33,11 +32,14 @@ class SermonAudioChurchShortNameCrawlerChirho:
         for page_num_chirho in range(1, num_pages_chirho + 1):
             sids_chirho = self._crawl_church_page_for_sids_chirho(page_num_chirho)
             for sid_chirho in sids_chirho:
-                sermon_info_url_chirho = f"https://www.sermonaudio.com/sermoninfo.asp?SID={sid_chirho}"
-                logger_chirho.info(sermon_info_url_chirho)
-                sermon_html_parser_chirho = SermonAudioSermonHtmlParserChirho(
-                    url_chirho=sermon_info_url_chirho, church_id_chirho=self.church_id_chirho)
-                sermon_html_parser_chirho.parse_chirho()
+                try:
+                    sermon_info_url_chirho = f"https://www.sermonaudio.com/sermoninfo.asp?SID={sid_chirho}"
+                    logger_chirho.info(sermon_info_url_chirho)
+                    sermon_html_parser_chirho = SermonAudioSermonHtmlParserChirho(
+                        url_chirho=sermon_info_url_chirho, church_id_chirho=self.church_id_chirho)
+                    sermon_html_parser_chirho.parse_chirho()
+                except Exception as e_chirho:
+                    logger_chirho.exception(e_chirho)
 
     def _get_num_pages_chirho(self) -> int:
         page1_url_chirho = self.sermon_audio_church_base_url_chirho + "1"
