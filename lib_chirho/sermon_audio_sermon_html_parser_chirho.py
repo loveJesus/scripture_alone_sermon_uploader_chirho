@@ -71,16 +71,13 @@ class SermonAudioSermonHtmlParserChirho:
 
         sermon_id_chirho = sermon_audio_link_1_chirho.split("/")[-1].split(".")[0]
 
-        sermon_audio_link_chirho = f"https://media-cloud.sermonaudio.com/audio/{sermon_id_chirho}.mp3" 
+        sermon_audio_link_chirho = f"https://media-cloud.sermonaudio.com/audio/{sermon_id_chirho}.mp3"
 
         sermon_author_first_name_chirho = " ".join(sermon_author_full_name_chirho.split(" ")[0:-1])
         sermon_author_last_name_chirho = sermon_author_full_name_chirho.split(" ")[-1]
-        sermon_video_link_chirho = sermon_video_link_element_chirho["href"] if sermon_video_link_element_chirho else None
+        sermon_video_link_chirho = f"https://media-cloud.sermonaudio.com/video/{sermon_id_chirho}.mp4" if sermon_video_link_element_chirho else None
         sermon_duration_ms_chirho = (sermon_duration_minutes_chirho * 60 + sermon_duration_seconds_chirho) * 1000
         sermon_out_date_chirho = f"{sermon_year_chirho}-{sermon_month_chirho:02d}-{sermon_day_chirho:02d} 10:00:00"
-
-        # ic(sermon_title_chirho, sermon_out_date_chirho, sermon_duration_ms_chirho,
-        #    sermon_author_first_name_chirho, sermon_author_last_name_chirho, sermon_audio_link_chirho)
 
         author_chirho = AuthorChirho(
             firstName=sermon_author_first_name_chirho, lastName=sermon_author_last_name_chirho)
