@@ -93,4 +93,5 @@ class SermonAudioSermonHtmlParserChirho:
             externalAudioFileUrl=sermon_audio_link_chirho,
             externalVideoFileUrl=sermon_video_link_chirho,
             church=self.church_id_chirho)
+        sermon_chirho.is_exception_on_exists_chirho = True
         sermon_chirho.find_and_update_or_create_chirho()

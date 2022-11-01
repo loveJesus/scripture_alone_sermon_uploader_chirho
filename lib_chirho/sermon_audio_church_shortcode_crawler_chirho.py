@@ -9,6 +9,8 @@ import requests
 
 from bs4 import BeautifulSoup
 
+from lib_chirho.database_chirho import DatabaseChirho
+from lib_chirho.models_chirho.base_model_chirho import RecordAlreadyExistsChirho
 from lib_chirho.models_chirho.church_chirho import ChurchChirho
 from lib_chirho.sermon_audio_sermon_html_parser_chirho import SermonAudioSermonHtmlParserChirho
 
@@ -21,6 +23,25 @@ class SermonAudioChurchShortNameCrawlerChirho:
         self.sermon_audio_church_base_url_chirho = f"https://www.sermonaudio.com/solo/{church_short_name_chirho}/sermons/?page="
         logger_chirho.info(f"Hallelujah - initiation search for sermons at {self.sermon_audio_church_base_url_chirho}")
         self._get_pb_church_chirho()
+
+    @classmethod
+    def all_church_crawl_chirho(cls):
+        """
+        Hallelujah, crawl all churches with sermonAudioShortName in pocketbase
+        :return:
+        """
+        client_chirho = DatabaseChirho.get_client_chirho()
+        pb_church_list_chirho = client_chirho.records.get_list("churches", 1, 400, {
+            "filter": "sermonAudioShortName!=null"})
+
+        logger_chirho.info(
+            f"☧ Found {len(pb_church_list_chirho.items)} churches with sermon audio short names")
+        for pb_church_chirho in pb_church_list_chirho.items:
+            short_name_chirho = pb_church_chirho.sermon_audio_short_name
+            logger_chirho.info(f"Hallelujah - crawling {short_name_chirho}")
+            sermon_audio_church_short_name_crawler_chirho = SermonAudioChurchShortNameCrawlerChirho(
+                short_name_chirho)
+            sermon_audio_church_short_name_crawler_chirho.crawl_chirho()
 
     def _get_pb_church_chirho(self) -> ChurchChirho:
         self.church_chirho = ChurchChirho(sermonAudioShortName=self.church_short_name_chirho)
@@ -38,6 +59,10 @@ class SermonAudioChurchShortNameCrawlerChirho:
                     sermon_html_parser_chirho = SermonAudioSermonHtmlParserChirho(
                         url_chirho=sermon_info_url_chirho, church_id_chirho=self.church_id_chirho)
                     sermon_html_parser_chirho.parse_chirho()
+                except RecordAlreadyExistsChirho as e_chirho:
+                    logger_chirho.info(
+                        f"Hallelujah, {self.church_name_chirho} reached already existing sermon {e_chirho}")
+                    return
                 except Exception as e_chirho:
                     logger_chirho.exception(e_chirho)
 

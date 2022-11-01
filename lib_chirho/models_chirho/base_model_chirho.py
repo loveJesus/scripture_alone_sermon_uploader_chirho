@@ -14,6 +14,9 @@ from lib_chirho.database_chirho import DatabaseChirho
 logger_chirho = logging.getLogger(__name__)
 
 
+class RecordAlreadyExistsChirho(Exception):
+    pass
+
 class BaseModelChirho:
     """
     Hallelujah, this class represents the author object. It contains the details of that author to search for and
@@ -26,6 +29,7 @@ class BaseModelChirho:
 
     def __init__(self):
         self.id_chirho: Optional[str] = None
+        self.is_exception_on_exists_chirho: bool = False
 
     @abstractmethod
     def __str__(self):
@@ -47,6 +51,10 @@ class BaseModelChirho:
         logger_chirho.info(f"☧ Finding or Creating {self.TABLE_ENGLISH_NAME_CHIRHO}: {self.dict_chirho()}")
         id_chirho = self.find_id_chirho()
         if id_chirho:
+            if self.is_exception_on_exists_chirho:
+                logger_chirho.error("HALLELUJAH ALREADY EXISTS")
+                raise RecordAlreadyExistsChirho(
+                    f"Record already exists for {self.TABLE_ENGLISH_NAME_CHIRHO} with id {id_chirho}")
             if self.TABLE_UPDATE_OVERWRITE_CHIRHO:
                 return self.update_chirho()
             else:

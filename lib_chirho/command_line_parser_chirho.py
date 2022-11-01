@@ -37,5 +37,8 @@ def parse_args_chirho():
     group_chirho.add_argument(
         "-c", "--sermon_audio_church_short_name_chirho",
         help="The short name of the church to download sermons from, e.g. \"youthman1611\" for Midway Baptist Church")
+    group_chirho.add_argument(
+        "-C", "--sermon_audio_all_church_update_chirho",
+        action=argparse.BooleanOptionalAction, help="Update all the churches in the database, Hallelujah")
 
     return parser_chirho.parse_args()

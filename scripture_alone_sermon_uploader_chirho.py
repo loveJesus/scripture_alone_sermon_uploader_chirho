@@ -7,6 +7,11 @@ from lib_chirho.sermon_audio_sermon_html_parser_chirho import SermonAudioSermonH
 
 def main_chirho():
     args_chirho = settings_chirho.args_chirho
+
+    if args_chirho.sermon_audio_all_church_update_chirho:
+        SermonAudioChurchShortNameCrawlerChirho.all_church_crawl_chirho()
+        exit(0)
+
     if args_chirho.sermon_audio_church_short_name_chirho:
         sermon_audio_church_short_name_crawler_chirho = SermonAudioChurchShortNameCrawlerChirho(
             args_chirho.sermon_audio_church_short_name_chirho)
