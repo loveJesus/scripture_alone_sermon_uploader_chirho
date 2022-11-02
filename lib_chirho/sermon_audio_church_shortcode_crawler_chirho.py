@@ -66,7 +66,8 @@ class SermonAudioChurchShortNameCrawlerChirho:
                 except RecordAlreadyExistsChirho as e_chirho:
                     logger_chirho.info(
                         f"Hallelujah, {self.church_name_chirho} reached already existing sermon {e_chirho}")
-                    return
+                    continue
+                    # return
                 except Exception as e_chirho:
                     logger_chirho.exception(e_chirho)
 
