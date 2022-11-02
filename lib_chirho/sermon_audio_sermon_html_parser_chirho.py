@@ -8,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from lib_chirho.models_chirho.author_chirho import AuthorChirho
+from lib_chirho.models_chirho.base_model_chirho import RecordAlreadyExistsChirho
 from lib_chirho.models_chirho.sermon_chirho import SermonChirho
 
 logger_chirho = logging.getLogger(__name__)
@@ -70,8 +71,11 @@ class SermonAudioSermonHtmlParserChirho:
             "a", {"rel": "nofollow", "href": re.compile(r'download.*mp4$')})
 
         sermon_id_chirho = sermon_audio_link_1_chirho.split("/")[-1].split(".")[0]
-
-        sermon_audio_link_chirho = f"https://media-cloud.sermonaudio.com/audio/{sermon_id_chirho}.mp3"
+        if sermon_id_chirho == "rss_source":
+            sermon_id_chirho = sermon_video_link_element_chirho["href"].split("/")[-2]
+            sermon_audio_link_chirho = None
+        else:
+            sermon_audio_link_chirho = f"https://media-cloud.sermonaudio.com/audio/{sermon_id_chirho}.mp3"
 
         sermon_author_first_name_chirho = " ".join(sermon_author_full_name_chirho.split(" ")[0:-1])
         sermon_author_last_name_chirho = sermon_author_full_name_chirho.split(" ")[-1]
@@ -91,4 +95,8 @@ class SermonAudioSermonHtmlParserChirho:
             externalVideoFileUrl=sermon_video_link_chirho,
             church=self.church_id_chirho)
         sermon_chirho.is_exception_on_exists_chirho = True
-        sermon_chirho.find_and_update_or_create_chirho()
+        try:
+            sermon_chirho.find_and_update_or_create_chirho()
+        except RecordAlreadyExistsChirho as e_chirho:
+            logger_chirho.warning("☧ The sermon already exists: \n%s", html_chirho)
+            raise e_chirho

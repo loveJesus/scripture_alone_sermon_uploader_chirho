@@ -54,6 +54,24 @@ class SermonChirho(BaseModelChirho):
     def __str__(self):
         return f"{self.id_chirho}) - {self.title_chirho} - {self.description_chirho}"
 
+    @classmethod
+    def is_sermon_id_exists(cls, sermon_id_chirho: str) -> bool:
+        """
+        Hallelujah, check if sermon audio sermon exists in pocketbase
+        :param sermon_id_chirho: sermon audio sermon id
+        :return: True if sermon exists
+        """
+        logger_chirho.info(f"☧ Finding {cls.TABLE_ENGLISH_NAME_CHIRHO}: by sermon id {sermon_id_chirho}")
+        client_chirho = DatabaseChirho.get_client_chirho()
+        external_audio_file_url_chirho = f"https://media-cloud.sermonaudio.com/audio/{sermon_id_chirho}.mp3"
+        filter_string_chirho = f'externalAudioFileUrl = "{external_audio_file_url_chirho}"'
+        logger_chirho.info(f"☧ Filter String : {filter_string_chirho}")
+        pb_model_list_chirho = client_chirho.records.get_list(cls.TABLE_ID_CHIRHO, 1, 50, {
+            "filter": filter_string_chirho})
+        result_chirho = len(pb_model_list_chirho.items) > 0
+        logger_chirho.info(f"☧ Result : {result_chirho}")
+        return result_chirho
+
     def dict_chirho(self) -> dict:
         return {
             "title": self.title_chirho,
@@ -76,5 +94,9 @@ class SermonChirho(BaseModelChirho):
         Hallelujah, find sermon by title
         :return: pocketbase filter string
         """
-        fixed_title_chirho = self.title_chirho.replace('"', '\\"')
-        return f'title = "{fixed_title_chirho}"'
+        # fixed_title_chirho = self.title_chirho.replace('"', '\\"')
+        # return f'title = "{fixed_title_chirho}"'
+        if self.externalAudioFileUrl_chirho:
+            return f'externalAudioFileUrl = "{self.externalAudioFileUrl_chirho}"'
+        return f'externalVideoFileUrl = "{self.externalVideoFileUrl_chirho}"'
+

@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 from lib_chirho.database_chirho import DatabaseChirho
 from lib_chirho.models_chirho.base_model_chirho import RecordAlreadyExistsChirho
 from lib_chirho.models_chirho.church_chirho import ChurchChirho
+from lib_chirho.models_chirho.sermon_chirho import SermonChirho
 from lib_chirho.sermon_audio_sermon_html_parser_chirho import SermonAudioSermonHtmlParserChirho
 
 logger_chirho = logging.getLogger(__name__)
@@ -54,6 +55,9 @@ class SermonAudioChurchShortNameCrawlerChirho:
             sids_chirho = self._crawl_church_page_for_sids_chirho(page_num_chirho)
             for sid_chirho in sids_chirho:
                 try:
+                    if SermonChirho.is_sermon_id_exists(sid_chirho):
+                        logger_chirho.info(f"Hallelujah - {self.church_name_chirho} sid_chirho {sid_chirho} already exists")
+                        continue
                     sermon_info_url_chirho = f"https://www.sermonaudio.com/sermoninfo.asp?SID={sid_chirho}"
                     logger_chirho.info(sermon_info_url_chirho)
                     sermon_html_parser_chirho = SermonAudioSermonHtmlParserChirho(
